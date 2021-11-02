@@ -1,0 +1,30 @@
+const path = require('path')
+const fs = require('fs')
+const { resolve } = require('path')
+//获取当前工作目录
+const appDirectory = fs.realpathSync(process.cwd())
+//从相对路径中解析绝对路径
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath)
+//默认的模块扩展名
+const moduleFileExtensions = ['js', 'jsx', 'ts', 'tsx', 'json']
+//解析模块路径
+const resolveModule = (resolveFn, filePath) => {
+  //查看文件是否存在
+  const extension = moduleFileExtensions.find((extension) => {
+    fs.existsSync(resolveFn(`${filePath}.${extension}`))
+  })
+  if (extension) {
+    return resolveFn(`${filePath}.${extension}`)
+  }
+  return resolveFn(`${filePath}.js`)
+}
+
+module.exports = {
+  appBuild: resolveApp('build'), //打包路径
+  appPublic: resolveApp('public'), //静态资源路径
+  appHtml: resolveApp('public/index.html'), //html模版路径
+  appIndexJs: resolveModule(resolveApp, 'src/index'), //打包入口路径
+  appNodeModules: resolveApp('node_modules'), //node_modules路径
+  appSrc: resolveApp('src'), //主文件入口路径
+  moduleFileExtensions, //模块扩展名
+}
