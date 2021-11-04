@@ -1,4 +1,5 @@
 const paths = require('./paths')
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = function (option) {
   return {
@@ -22,7 +23,7 @@ module.exports = function (option) {
           use: [
             {
               loader: 'babel-loader',
-              option: {
+              options: {
                 presets: ['@babel/preset-env', '@babel/preset-react'],
               },
             },
@@ -31,12 +32,12 @@ module.exports = function (option) {
       ],
     },
     devServer: {},
-    Plugin: [
+    plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
       }),
-      ...option.Plugin,
+      ...option.plugins,
     ],
-    stats: options.stats, //打包日志错误和新的编译时输出
+    stats: option.stats, //打包日志错误和新的编译时输出
   }
 }
