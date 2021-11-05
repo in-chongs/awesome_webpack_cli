@@ -1,8 +1,8 @@
-import { React } from 'react'
-import { ReactDOM } from 'react-dom'
+import React from 'react'
+import { render } from 'react-dom'
 
 const App = () => {
   return <div>App入口</div>
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'))
+render(<App />, document.querySelector('#root'))
