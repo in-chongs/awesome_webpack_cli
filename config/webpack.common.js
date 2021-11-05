@@ -1,5 +1,4 @@
 const paths = require('./paths')
-const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = function (option) {
   return {
@@ -31,7 +30,20 @@ module.exports = function (option) {
         },
       ],
     },
-    devServer: {},
+    resolve: {
+      //使用第三模块 第一反应去 根目录下的 node_modules 寻找
+      modules: [paths.appNodeModules],
+      //在import的时候不加文件扩展名,会依次遍历extensions 添加扩展名进行匹配
+      extensions: ['.js', '.jsx', '.css'],
+      //创建别名,在import或require的别名,来确保模块引入变得更简单
+      alias: {
+        '@src': paths.appSrc,
+        '@public': paths.appPublic,
+      },
+    },
+    devServer: {
+      publicPath: '/',
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
