@@ -1,5 +1,6 @@
 const paths = require('./paths')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 // 设置 常量
 const cssRegex = /\.css$/
@@ -9,6 +10,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/
 const imageInlineSizeLimit = 4 * 1024
 
 module.exports = function (option) {
+  console.log('option===>', option)
   console.log('paths.appSrc===>', paths.appSrc)
   return {
     mode: option.mode,
@@ -32,7 +34,7 @@ module.exports = function (option) {
             {
               loader: 'babel-loader',
               options: {
-                presets: ['@babel/preset-env', '@babel/preset-react'],
+                cacheDirectory: true,
               },
             },
           ],
@@ -89,7 +91,8 @@ module.exports = function (option) {
       //使用第三模块 第一反应去 根目录下的 node_modules 寻找
       modules: [paths.appNodeModules],
       //在import的时候不加文件扩展名,会依次遍历extensions 添加扩展名进行匹配
-      extensions: ['.js', '.jsx', '.css'],
+      extensions: ['.js', '.jsx', '.css', '*'],
+      mainFields: ['browser', 'jsnext:main', 'main'],
       //创建别名,在import或require的别名,来确保模块引入变得更简单
       alias: {
         '@src': paths.appSrc,
@@ -103,6 +106,10 @@ module.exports = function (option) {
       new HtmlWebpackPlugin({
         template: './public/index.html',
       }),
+      new webpack.DefinePlugin({
+        NODE_ENV: isEnvProduction && JSON.stringify('production'), // 设置全局
+      }),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), //忽略某些特定的模块，让 webpack 不把这些指定的模块打包进去
       ...option.plugins,
     ],
     stats: option.stats, //打包日志错误和新的编译时输出
