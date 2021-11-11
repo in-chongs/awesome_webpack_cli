@@ -1,5 +1,6 @@
 const paths = require('./paths')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 // 设置 常量
@@ -10,8 +11,8 @@ const sassModuleRegex = /\.module\.(scss|sass)$/
 const imageInlineSizeLimit = 4 * 1024
 
 module.exports = function (option) {
-  console.log('option===>', option)
-  console.log('paths.appSrc===>', paths.appSrc)
+  // console.log('option===>', option)
+  // console.log('paths.appSrc===>', paths.appSrc)
   const isEnvProduction = option.mode === 'production'
   return {
     mode: option.mode,
@@ -46,7 +47,7 @@ module.exports = function (option) {
               test: cssRegex,
               exclude: cssModuleRegex,
               use: [
-                'style-loader',
+                isEnvProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                 {
                   loader: 'css-loader',
                   options: {
@@ -54,6 +55,7 @@ module.exports = function (option) {
                   },
                 },
                 'postcss-loader',
+                'sass-loader',
               ],
             },
             {
