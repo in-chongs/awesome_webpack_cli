@@ -14,9 +14,9 @@ module.exports = {
     ecmaVersions: 12,
     sourceType: 'module',
   },
-  plugins: [],
+  plugins: ['react'],
   rules: {
-    'consistent-return': 0, //剪头函数不强制return
+    'consistent-return': 0, //箭头函数不强制return
     semi: 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'react/jsx-uses-react': 'error', //防止react被错误的标记为未使用

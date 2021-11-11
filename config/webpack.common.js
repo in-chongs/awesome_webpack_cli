@@ -1,6 +1,8 @@
 const paths = require('./paths')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 
 // 设置 常量
@@ -101,6 +103,18 @@ module.exports = function (option) {
         '@src': paths.appSrc,
         '@public': paths.appPublic,
       },
+    },
+    //优化
+    optimization: {
+      minimize: isEnvProduction, //是否为生产环境
+      minimizer: [
+        new CssMinimizerPlugin({
+          parallel: true, // 开启多进程并发执行，默认 os.cpus().length - 1
+        }),
+        new TerserPlugin({
+          parallel: true, // 开启多进程并发执行
+        }),
+      ],
     },
     devServer: {
       publicPath: '/',
