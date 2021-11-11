@@ -12,6 +12,7 @@ const imageInlineSizeLimit = 4 * 1024
 module.exports = function (option) {
   console.log('option===>', option)
   console.log('paths.appSrc===>', paths.appSrc)
+  const isEnvProduction = option.mode === 'production'
   return {
     mode: option.mode,
     entry: paths.appSrc,
@@ -109,7 +110,6 @@ module.exports = function (option) {
       new webpack.DefinePlugin({
         NODE_ENV: isEnvProduction && JSON.stringify('production'), // 设置全局
       }),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), //忽略某些特定的模块，让 webpack 不把这些指定的模块打包进去
       ...option.plugins,
     ],
     stats: option.stats, //打包日志错误和新的编译时输出

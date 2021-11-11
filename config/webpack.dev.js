@@ -1,10 +1,10 @@
-const { default: ESLintWebpackPlugin } = require('eslint-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const paths = require('./paths')
 
 module.exports = require('./webpack.common')({
   mode: 'development',
   plugins: [
-    new ESLintWebpackPlugin({
+    new ESLintPlugin({
       fix: true,
       extensions: ['js', 'jsx'],
       context: paths.appSrc, // 文件根目录

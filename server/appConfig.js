@@ -4,6 +4,6 @@ module.exports = {
     '/api': 'location:3000', //代理的接口
     '/api2': 'location:4000', //代理的接口
   },
-  port: 8000, //端口号
+  port: 8801, //端口号
   host: 'localhost', //主机号
 }
